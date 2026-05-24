@@ -43,9 +43,9 @@ export default function PayrollPage() {
 
     return (
         <div className="fade-in">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <div className="page-header-flex">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Payroll</h1>
+                    <h1 className="page-title">Payroll</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>Monthly salary breakdown based on attendance</p>
                 </div>
                 <input type="month" className="input" value={selectedMonth} onChange={e => setSelectedMonth(e.target.value)} style={{ width: 200 }} />
@@ -69,7 +69,7 @@ export default function PayrollPage() {
                 </div>
             </div>
 
-            <div className="table-container">
+            <div className="table-container responsive-table">
                 <table>
                     <thead>
                         <tr><th>Employee</th><th>Position</th><th>Base Salary</th><th>Present</th><th>Half Day</th><th>Absent</th><th>Earned</th></tr>
@@ -81,16 +81,16 @@ export default function PayrollPage() {
                             const pay = calculatePay(emp);
                             return (
                                 <tr key={emp._id}>
-                                    <td>
+                                    <td data-label="Employee">
                                         <div style={{ fontWeight: 600 }}>{emp.name}</div>
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{emp.department}</div>
                                     </td>
-                                    <td>{emp.position}</td>
-                                    <td>₹{emp.salary?.toLocaleString()}</td>
-                                    <td><span className="badge badge-success">{pay.present}</span></td>
-                                    <td><span className="badge badge-warning">{pay.halfDay}</span></td>
-                                    <td><span className="badge badge-danger">{pay.absent}</span></td>
-                                    <td style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1.05rem' }}>₹{pay.earned.toLocaleString()}</td>
+                                    <td data-label="Position">{emp.position}</td>
+                                    <td data-label="Base Salary">₹{emp.salary?.toLocaleString()}</td>
+                                    <td data-label="Present"><span className="badge badge-success">{pay.present}</span></td>
+                                    <td data-label="Half Day"><span className="badge badge-warning">{pay.halfDay}</span></td>
+                                    <td data-label="Absent"><span className="badge badge-danger">{pay.absent}</span></td>
+                                    <td data-label="Earned" style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1.05rem' }}>₹{pay.earned.toLocaleString()}</td>
                                 </tr>
                             );
                         })}

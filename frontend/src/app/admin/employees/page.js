@@ -71,15 +71,15 @@ export default function EmployeesPage() {
     return (
         <div className="fade-in">
             {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <div className="page-header-flex">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Employees</h1>
+                    <h1 className="page-title">Employees</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>{employees.length} team members</p>
                 </div>
                 <button onClick={openAdd} className="btn btn-primary">+ Add Employee</button>
             </div>
 
-            <div className="table-container">
+            <div className="table-container responsive-table">
                 <table>
                     <thead><tr><th>Name</th><th>Position</th><th>Department</th><th>Phone</th><th>Salary</th><th>Status</th><th>Actions</th></tr></thead>
                     <tbody>
@@ -87,20 +87,20 @@ export default function EmployeesPage() {
                             <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No employees added yet</td></tr>
                         ) : employees.map(emp => (
                             <tr key={emp._id}>
-                                <td>
+                                <td data-label="Name">
                                     <div style={{ fontWeight: 600 }}>{emp.name}</div>
                                     <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{emp.email}</div>
                                 </td>
-                                <td>{emp.position}</td>
-                                <td><span className={`badge ${deptColors[emp.department] || 'badge-neutral'}`}>{emp.department}</span></td>
-                                <td>{emp.phone}</td>
-                                <td style={{ fontWeight: 600 }}>₹{emp.salary?.toLocaleString()}</td>
-                                <td>
+                                <td data-label="Position">{emp.position}</td>
+                                <td data-label="Department"><span className={`badge ${deptColors[emp.department] || 'badge-neutral'}`}>{emp.department}</span></td>
+                                <td data-label="Phone">{emp.phone}</td>
+                                <td data-label="Salary" style={{ fontWeight: 600 }}>₹{emp.salary?.toLocaleString()}</td>
+                                <td data-label="Status">
                                     <button onClick={() => toggleStatus(emp)} className={`badge ${emp.status === 'active' ? 'badge-success' : 'badge-danger'}`} style={{ cursor: 'pointer', border: 'none' }}>
                                         {emp.status}
                                     </button>
                                 </td>
-                                <td>
+                                <td data-label="Actions">
                                     <div style={{ display: 'flex', gap: 8 }}>
                                         <button onClick={() => openEdit(emp)} className="btn btn-ghost btn-sm">✏️</button>
                                         <button onClick={() => handleDelete(emp._id)} className="btn btn-ghost btn-sm" style={{ color: 'var(--danger)' }}>🗑️</button>

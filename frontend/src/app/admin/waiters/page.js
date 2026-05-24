@@ -61,9 +61,11 @@ export default function AdminWaiters() {
   return (
     <div className="fade-in">
       {toast}
-      <div className="page-header" style={{ borderBottom: 'none' }}>
-        <h1>Waiters</h1>
-        <p>Manage waiter accounts for your restaurant</p>
+      <div className="page-header-flex">
+        <div>
+          <h1 className="page-title">Waiters</h1>
+          <p style={{ color: 'var(--text-secondary)' }}>Manage waiter accounts for your restaurant</p>
+        </div>
       </div>
 
       {loading ? (
@@ -76,7 +78,7 @@ export default function AdminWaiters() {
             </button>
           </div>
 
-          <div className="table-container">
+          <div className="table-container responsive-table">
             <table>
               <thead>
                 <tr>
@@ -93,18 +95,18 @@ export default function AdminWaiters() {
                   <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No waiters created yet</td></tr>
                 ) : waiters.map(w => (
                   <tr key={w._id}>
-                    <td style={{ fontWeight: 600 }}>{w.name}</td>
-                    <td style={{ color: 'var(--text-secondary)' }}>{w.email}</td>
-                    <td>{w.phone || '—'}</td>
-                    <td>
+                    <td data-label="Name" style={{ fontWeight: 600 }}>{w.name}</td>
+                    <td data-label="Email" style={{ color: 'var(--text-secondary)' }}>{w.email}</td>
+                    <td data-label="Phone">{w.phone || '—'}</td>
+                    <td data-label="Status">
                       <span className={`badge ${w.isActive ? 'badge-success' : 'badge-danger'}`}>
                         {w.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                    <td data-label="Created" style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
                       {new Date(w.createdAt).toLocaleDateString()}
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <button
                         onClick={() => toggleStatus(w._id, w.isActive)}
                         className={`btn btn-sm ${w.isActive ? 'btn-danger' : 'btn-success'}`}

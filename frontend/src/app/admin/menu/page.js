@@ -91,25 +91,25 @@ export default function MenuManagement() {
             {categories.map(cat => (
                 <div key={cat} style={{ marginBottom: 32 }}>
                     <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 16, color: 'var(--primary)' }}>{cat}</h2>
-                    <div className="table-container">
+                    <div className="table-container responsive-table">
                         <table>
                             <thead><tr><th>Item</th><th>Price</th><th>Type</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
                             <tbody>
                                 {items.filter(i => i.category === cat).map(item => (
                                     <tr key={item._id}>
-                                        <td>
+                                        <td data-label="Item">
                                             <div style={{ fontWeight: 600 }}>{item.name}</div>
                                             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{item.description?.slice(0, 50)}...</div>
                                         </td>
-                                        <td style={{ fontWeight: 600, color: 'var(--primary)' }}>₹{item.price}</td>
-                                        <td><span className={item.isVeg ? 'veg-badge' : 'nonveg-badge'}></span></td>
-                                        <td>{item.preparationTime}m</td>
-                                        <td>
+                                        <td data-label="Price" style={{ fontWeight: 600, color: 'var(--primary)' }}>₹{item.price}</td>
+                                        <td data-label="Type"><span className={item.isVeg ? 'veg-badge' : 'nonveg-badge'}></span></td>
+                                        <td data-label="Time">{item.preparationTime}m</td>
+                                        <td data-label="Status">
                                             <button onClick={() => toggleAvailability(item)} className={`badge ${item.isAvailable ? 'badge-success' : 'badge-danger'}`} style={{ cursor: 'pointer', border: 'none' }}>
                                                 {item.isAvailable ? 'Available' : 'Unavailable'}
                                             </button>
                                         </td>
-                                        <td>
+                                        <td data-label="Actions">
                                             <div style={{ display: 'flex', gap: 8 }}>
                                                 <button onClick={() => openEdit(item)} className="btn btn-ghost btn-sm">✏️</button>
                                                 <button onClick={() => handleDelete(item._id)} className="btn btn-ghost btn-sm" style={{ color: 'var(--danger)' }}>🗑️</button>

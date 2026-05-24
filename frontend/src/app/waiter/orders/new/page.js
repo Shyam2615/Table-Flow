@@ -14,6 +14,7 @@ export default function NewOrder() {
   const [category, setCategory] = useState('all');
   const [cart, setCart] = useState([]);
   const [notes, setNotes] = useState('');
+  const [cartOpen, setCartOpen] = useState(false);
   const [placing, setPlacing] = useState(false);
 
   const filteredItems = menuItems.filter(m => category === 'all' || m.category === category);
@@ -111,7 +112,7 @@ export default function NewOrder() {
         </select>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
+      <div className="waiter-order-grid">
         {/* Menu */}
         <div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
@@ -178,8 +179,8 @@ export default function NewOrder() {
           </div>
         </div>
 
-        {/* Cart */}
-        <div style={{
+        {/* Cart - Desktop */}
+        <div className="waiter-cart-desktop" style={{
           background: 'var(--surface)',
           border: '2px solid var(--border)',
           borderRadius: '12px',
@@ -209,60 +210,75 @@ export default function NewOrder() {
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>₹{item.price} each</div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <button
-                      onClick={() => updateQty(item._id, -1)}
-                      style={{
-                        width: 26, height: 26, borderRadius: '50%', border: '1px solid var(--border)',
-                        background: 'var(--bg)', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
-                    >−</button>
+                    <button onClick={() => updateQty(item._id, -1)} className="qty-btn" style={{ width: 26, height: 26 }}>−</button>
                     <span style={{ fontWeight: 600, minWidth: 20, textAlign: 'center' }}>{item.qty}</span>
-                    <button
-                      onClick={() => updateQty(item._id, 1)}
-                      style={{
-                        width: 26, height: 26, borderRadius: '50%', border: 'none',
-                        background: 'var(--primary)', color: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
-                    >+</button>
+                    <button onClick={() => updateQty(item._id, 1)} className="qty-btn" style={{ width: 26, height: 26, background: 'var(--primary)', color: '#fff', border: 'none' }}>+</button>
                   </div>
                 </div>
               ))}
             </div>
           )}
 
-          <textarea
-            placeholder="Order notes..."
-            value={notes}
-            onChange={e => setNotes(e.target.value)}
-            className="input"
-            rows={2}
-            style={{ width: '100%', boxSizing: 'border-box', marginBottom: 12, resize: 'none' }}
-          />
+          <textarea placeholder="Order notes..." value={notes} onChange={e => setNotes(e.target.value)}
+            className="input" rows={2} style={{ width: '100%', boxSizing: 'border-box', marginBottom: 12, resize: 'none' }} />
 
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            padding: '10px 0', borderTop: '2px solid var(--border)',
-            fontWeight: 700, fontSize: '1.1rem',
-          }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderTop: '2px solid var(--border)', fontWeight: 700, fontSize: '1.1rem' }}>
             <span>Total</span>
             <span style={{ color: 'var(--primary)' }}>₹{cartTotal}</span>
           </div>
 
-          <button
-            onClick={placeOrder}
-            disabled={!selectedTable || cart.length === 0 || placing}
+          <button onClick={placeOrder} disabled={!selectedTable || cart.length === 0 || placing}
             className="btn btn-primary"
-            style={{
-              width: '100%', marginTop: 12, padding: '12px',
-              opacity: (!selectedTable || cart.length === 0 || placing) ? 0.6 : 1,
-            }}
-          >
+            style={{ width: '100%', marginTop: 12, padding: '12px', opacity: (!selectedTable || cart.length === 0 || placing) ? 0.6 : 1 }}>
             {placing ? 'Placing Order...' : 'Place Order →'}
           </button>
         </div>
       </div>
+
+      {/* Mobile Cart FAB + Drawer */}
+      {cart.length > 0 && (
+        <>
+          <button className="cart-fab" onClick={() => setCartOpen(true)}>
+            🛒
+            <span className="cart-fab-badge">{cart.reduce((s, c) => s + c.qty, 0)}</span>
+          </button>
+          <div className={`cart-drawer-overlay${cartOpen ? ' open' : ''}`} onClick={() => setCartOpen(false)}></div>
+          <div className={`cart-drawer${cartOpen ? ' open' : ''}`}>
+            <div className="cart-drawer-header">
+              <div className="cart-drawer-handle"></div>
+              <h3>🛒 Order Summary</h3>
+              <button onClick={() => setCartOpen(false)} className="btn btn-ghost btn-sm">✕</button>
+            </div>
+            <div className="cart-drawer-body">
+              {cart.map(item => (
+                <div key={item._id} className="cart-item">
+                  <div>
+                    <div style={{ fontWeight: 500, fontSize: '0.85rem' }}>{item.name}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>₹{item.price} each</div>
+                  </div>
+                  <div className="item-qty">
+                    <button onClick={() => updateQty(item._id, -1)} className="qty-btn">−</button>
+                    <span style={{ fontWeight: 600 }}>{item.qty}</span>
+                    <button onClick={() => updateQty(item._id, 1)} className="qty-btn">+</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="cart-drawer-footer">
+              <textarea placeholder="Order notes..." value={notes} onChange={e => setNotes(e.target.value)}
+                className="input" rows={2} style={{ width: '100%', marginBottom: 12, resize: 'none' }} />
+              <div className="cart-total" style={{ padding: '0 0 12px' }}>
+                <span>Total</span>
+                <span style={{ color: 'var(--primary)' }}>₹{cartTotal}</span>
+              </div>
+              <button onClick={placeOrder} disabled={!selectedTable || cart.length === 0 || placing}
+                className="btn btn-primary" style={{ width: '100%', opacity: (!selectedTable || cart.length === 0 || placing) ? 0.6 : 1 }}>
+                {placing ? 'Placing Order...' : 'Place Order →'}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

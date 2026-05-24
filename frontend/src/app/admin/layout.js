@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import API from '@/lib/api';
 
 export default function AdminLayout({ children }) {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const pathname = usePathname();
     const [restaurant, setRestaurant] = useState(null);
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,6 +16,10 @@ export default function AdminLayout({ children }) {
             API.get('/restaurants/owner/my-restaurant').then(res => setRestaurant(res.data)).catch(() => { });
         }
     }, [user]);
+
+    if (loading) {
+        return <div className="loading" style={{ minHeight: '60vh' }}><div className="spinner"></div><p style={{ marginTop: 16, color: 'var(--text-secondary)' }}>Loading...</p></div>;
+    }
 
     if (!user || user.role !== 'owner') {
         return (

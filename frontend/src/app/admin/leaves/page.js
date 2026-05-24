@@ -57,15 +57,15 @@ export default function LeavesPage() {
     return (
         <div className="fade-in">
             {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <div className="page-header-flex">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Leave Requests</h1>
+                    <h1 className="page-title">Leave Requests</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>Manage employee leave applications</p>
                 </div>
                 <button onClick={() => { setForm({ employeeId: '', startDate: '', endDate: '', reason: '', type: 'casual' }); setShowModal(true); }} className="btn btn-primary">+ Apply Leave</button>
             </div>
 
-            <div className="table-container">
+            <div className="table-container responsive-table">
                 <table>
                     <thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
                     <tbody>
@@ -73,13 +73,13 @@ export default function LeavesPage() {
                             <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No leave requests</td></tr>
                         ) : leaves.map(leave => (
                             <tr key={leave._id}>
-                                <td style={{ fontWeight: 600 }}>{leave.employeeId?.name || 'N/A'}</td>
-                                <td>{typeBadge(leave.type)}</td>
-                                <td>{leave.startDate}</td>
-                                <td>{leave.endDate}</td>
-                                <td style={{ maxWidth: 200, color: 'var(--text-secondary)' }}>{leave.reason}</td>
-                                <td>{statusBadge(leave.status)}</td>
-                                <td>
+                                <td data-label="Employee" style={{ fontWeight: 600 }}>{leave.employeeId?.name || 'N/A'}</td>
+                                <td data-label="Type">{typeBadge(leave.type)}</td>
+                                <td data-label="From">{leave.startDate}</td>
+                                <td data-label="To">{leave.endDate}</td>
+                                <td data-label="Reason" style={{ maxWidth: 200, color: 'var(--text-secondary)' }}>{leave.reason}</td>
+                                <td data-label="Status">{statusBadge(leave.status)}</td>
+                                <td data-label="Actions">
                                     {leave.status === 'pending' && (
                                         <div style={{ display: 'flex', gap: 6 }}>
                                             <button onClick={() => updateStatus(leave._id, 'approved')} className="btn btn-success btn-sm">Approve</button>

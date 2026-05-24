@@ -29,8 +29,8 @@ export default function RegisterPage() {
       localStorage.setItem('auth_user', JSON.stringify(data.user));
       localStorage.setItem('auth_token', data.token);
       window.__clerk_token = data.token;
+      window.dispatchEvent(new Event('auth-storage-update'));
       router.push('/restaurants');
-      router.refresh();
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {

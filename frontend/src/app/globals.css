@@ -19,6 +19,12 @@
 }
 
 :root {
+  /* Colors - aliases used in components */
+  --bg: #12121a;
+  --surface: #12121a;
+  --text: #f1f5f9;
+  --error: #ef4444;
+
   /* Colors */
   --primary: #f97316;
   --primary-dark: #ea580c;
@@ -506,6 +512,52 @@ textarea.input {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+}
+
+/* Responsive table: converts to cards on mobile */
+@media (max-width: 768px) {
+  .table-container.responsive-table table,
+  .table-container.responsive-table thead,
+  .table-container.responsive-table tbody,
+  .table-container.responsive-table th,
+  .table-container.responsive-table td,
+  .table-container.responsive-table tr {
+    display: block;
+  }
+
+  .table-container.responsive-table thead {
+    display: none;
+  }
+
+  .table-container.responsive-table tbody tr {
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    background: var(--bg-card);
+  }
+
+  .table-container.responsive-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .table-container.responsive-table td:last-child {
+    border-bottom: none;
+  }
+
+  .table-container.responsive-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
 }
 
 .table-container table {
@@ -1833,6 +1885,74 @@ textarea.input {
 
   .tables-list {
     max-height: none;
+  }
+}
+
+/* ============ WAITER ORDER PAGE ============ */
+.waiter-order-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+}
+
+.waiter-cart-desktop {
+  position: sticky;
+  top: 16px;
+  align-self: start;
+  max-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .waiter-order-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .waiter-cart-desktop {
+    display: none;
+  }
+}
+
+/* ============ SHARED PAGE HEADER ============ */
+.page-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.shifts-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .page-header-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  .page-header-flex .btn {
+    width: 100%;
+  }
+
+  .shifts-grid {
+    grid-template-columns: repeat(7, minmax(200px, 1fr));
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
   }
 }
 

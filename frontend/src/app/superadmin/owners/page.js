@@ -34,7 +34,7 @@ export default function SuperAdminOwners() {
       </div>
 
       {loading ? <div className="loading"><div className="spinner"></div></div> : (
-        <div className="table-container">
+        <div className="table-container responsive-table">
           <table>
             <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
             <tbody>
@@ -42,12 +42,12 @@ export default function SuperAdminOwners() {
                 <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No owners yet</td></tr>
               ) : owners.map(owner => (
                 <tr key={owner._id}>
-                  <td style={{ fontWeight: 600 }}>{owner.name}</td>
-                  <td>{owner.email}</td>
-                  <td>{owner.phone}</td>
-                  <td style={{ color: 'var(--text-secondary)' }}>{new Date(owner.createdAt).toLocaleDateString()}</td>
-                  <td><span className={`badge ${owner.isActive ? 'badge-success' : 'badge-danger'}`}>{owner.isActive ? 'Active' : 'Inactive'}</span></td>
-                  <td>
+                  <td data-label="Name" style={{ fontWeight: 600 }}>{owner.name}</td>
+                  <td data-label="Email">{owner.email}</td>
+                  <td data-label="Phone">{owner.phone}</td>
+                  <td data-label="Joined" style={{ color: 'var(--text-secondary)' }}>{new Date(owner.createdAt).toLocaleDateString()}</td>
+                  <td data-label="Status"><span className={`badge ${owner.isActive ? 'badge-success' : 'badge-danger'}`}>{owner.isActive ? 'Active' : 'Inactive'}</span></td>
+                  <td data-label="Actions">
                     <button onClick={() => toggleActive(owner._id, owner.isActive)} className={`btn btn-sm ${owner.isActive ? 'btn-danger' : 'btn-success'}`}>
                       {owner.isActive ? 'Deactivate' : 'Activate'}
                     </button>

@@ -49,16 +49,16 @@ export default function ShiftsPage() {
     return (
         <div className="fade-in">
             {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <div className="page-header-flex">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Shift Schedule</h1>
+                    <h1 className="page-title">Shift Schedule</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>Plan and manage employee shifts</p>
                 </div>
                 <button onClick={() => { setForm({ employeeId: '', day: 'monday', startTime: '09:00', endTime: '17:00', role: '' }); setShowModal(true); }} className="btn btn-primary">+ Add Shift</button>
             </div>
 
             {/* Weekly Grid View */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 12 }}>
+            <div className="shifts-grid">
                 {DAYS.map(day => (
                     <div key={day} className="card" style={{ minHeight: 200 }}>
                         <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)', background: 'var(--bg-surface)' }}>

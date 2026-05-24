@@ -5,9 +5,13 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 export default function WaiterLayout({ children }) {
-    const { user, logout } = useAuth();
+    const { user, logout, loading } = useAuth();
     const pathname = usePathname();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    if (loading) {
+        return <div className="loading" style={{ minHeight: '60vh' }}><div className="spinner"></div><p style={{ marginTop: 16, color: 'var(--text-secondary)' }}>Loading...</p></div>;
+    }
 
     if (!user || user.role !== 'waiter') {
         return (

@@ -85,8 +85,8 @@ export default function SuperAdminDashboard() {
 
       {/* Recent Activity */}
       <div className="grid-2">
-        <div className="table-container">
-          <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="table-container responsive-table">
+          <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
             <h3 style={{ fontWeight: 700 }}>Recent Users</h3>
             <Link href="/superadmin/users" className="btn btn-ghost btn-sm">View All</Link>
           </div>
@@ -99,18 +99,18 @@ export default function SuperAdminDashboard() {
                 <tr><td colSpan={4} style={{ textAlign: 'center', padding: 32, color: 'var(--text-muted)' }}>No users yet</td></tr>
               ) : recentUsers.map(u => (
                 <tr key={u._id}>
-                  <td style={{ fontWeight: 600 }}>{u.name}</td>
-                  <td style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{u.email}</td>
-                  <td><span className={`badge ${u.role === 'superadmin' ? 'badge-primary' : u.role === 'owner' ? 'badge-info' : 'badge-neutral'}`}>{u.role}</span></td>
-                  <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+                  <td data-label="Name" style={{ fontWeight: 600 }}>{u.name}</td>
+                  <td data-label="Email" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{u.email}</td>
+                  <td data-label="Role"><span className={`badge ${u.role === 'superadmin' ? 'badge-primary' : u.role === 'owner' ? 'badge-info' : 'badge-neutral'}`}>{u.role}</span></td>
+                  <td data-label="Joined" style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(u.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <div className="table-container">
-          <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="table-container responsive-table">
+          <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
             <h3 style={{ fontWeight: 700 }}>Recent Restaurants</h3>
             <Link href="/superadmin/restaurants" className="btn btn-ghost btn-sm">View All</Link>
           </div>
@@ -123,10 +123,10 @@ export default function SuperAdminDashboard() {
                 <tr><td colSpan={4} style={{ textAlign: 'center', padding: 32, color: 'var(--text-muted)' }}>No restaurants yet</td></tr>
               ) : recentRestaurants.map(r => (
                 <tr key={r._id}>
-                  <td style={{ fontWeight: 600 }}>{r.name}</td>
-                  <td style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{r.ownerId?.name || 'N/A'}</td>
-                  <td><span className={`badge ${r.isApproved ? 'badge-success' : 'badge-warning'}`}>{r.isApproved ? 'Approved' : 'Pending'}</span></td>
-                  <td>⭐ {r.rating?.toFixed(1) || 'N/A'}</td>
+                  <td data-label="Restaurant" style={{ fontWeight: 600 }}>{r.name}</td>
+                  <td data-label="Owner" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{r.ownerId?.name || 'N/A'}</td>
+                  <td data-label="Status"><span className={`badge ${r.isApproved ? 'badge-success' : 'badge-warning'}`}>{r.isApproved ? 'Approved' : 'Pending'}</span></td>
+                  <td data-label="Rating">⭐ {r.rating?.toFixed(1) || 'N/A'}</td>
                 </tr>
               ))}
             </tbody>

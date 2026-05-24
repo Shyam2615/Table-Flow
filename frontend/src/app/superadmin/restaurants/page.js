@@ -159,16 +159,16 @@ export default function SuperAdminRestaurants() {
     <div className="fade-in">
       {toast && <div className={`toast toast-${toast.type}`} onClick={() => setToast(null)}>{toast.msg}</div>}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
+      <div className="page-header-flex">
         <div>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>All Restaurants</h1>
+          <h1 className="page-title">All Restaurants</h1>
           <p style={{ color: 'var(--text-secondary)' }}>Manage all restaurants on the platform</p>
         </div>
         <button onClick={() => setShowCreateModal(true)} className="btn btn-primary">+ Create Restaurant</button>
       </div>
 
       {loading ? <div className="loading"><div className="spinner"></div></div> : (
-        <div className="table-container">
+        <div className="table-container responsive-table">
           <table>
             <thead><tr><th>Restaurant</th><th>Owner</th><th>Cuisine</th><th>Tables</th><th>Rating</th><th>Approved</th><th>Active</th><th>Actions</th></tr></thead>
             <tbody>
@@ -176,7 +176,7 @@ export default function SuperAdminRestaurants() {
                 <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No restaurants yet</td></tr>
               ) : restaurants.map(r => (
                 <tr key={r._id}>
-                  <td>
+                  <td data-label="Restaurant">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <img src={r.image || 'https://via.placeholder.com/40'} alt="" style={{ width: 40, height: 40, borderRadius: 'var(--radius-sm)', objectFit: 'cover' }} />
                       <div>
@@ -185,13 +185,13 @@ export default function SuperAdminRestaurants() {
                       </div>
                     </div>
                   </td>
-                  <td>{r.ownerId?.name || 'N/A'}<br /><span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{r.ownerId?.email}</span></td>
-                  <td>{r.cuisine?.join(', ')}</td>
-                  <td><span className="badge badge-info">{r.tables?.length || 0}</span></td>
-                  <td><span className="rating">⭐ {r.rating?.toFixed(1)}</span></td>
-                  <td><span className={`badge ${r.isApproved ? 'badge-success' : 'badge-warning'}`}>{r.isApproved ? 'Yes' : 'No'}</span></td>
-                  <td><span className={`badge ${r.isActive ? 'badge-success' : 'badge-danger'}`}>{r.isActive ? 'Active' : 'Suspended'}</span></td>
-                  <td>
+                  <td data-label="Owner">{r.ownerId?.name || 'N/A'}<br /><span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{r.ownerId?.email}</span></td>
+                  <td data-label="Cuisine">{r.cuisine?.join(', ')}</td>
+                  <td data-label="Tables"><span className="badge badge-info">{r.tables?.length || 0}</span></td>
+                  <td data-label="Rating"><span className="rating">⭐ {r.rating?.toFixed(1)}</span></td>
+                  <td data-label="Approved"><span className={`badge ${r.isApproved ? 'badge-success' : 'badge-warning'}`}>{r.isApproved ? 'Yes' : 'No'}</span></td>
+                  <td data-label="Active"><span className={`badge ${r.isActive ? 'badge-success' : 'badge-danger'}`}>{r.isActive ? 'Active' : 'Suspended'}</span></td>
+                  <td data-label="Actions">
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                       <button onClick={() => openEdit(r)} className="btn btn-sm btn-primary" title="Edit restaurant info & tables">Edit</button>
                       <button onClick={() => toggleApproval(r._id, r.isApproved)} className={`btn btn-sm ${r.isApproved ? 'btn-secondary' : 'btn-success'}`}>

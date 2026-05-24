@@ -53,15 +53,15 @@ export default function AttendancePage() {
     return (
         <div className="fade-in">
             {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <div className="page-header-flex">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Attendance</h1>
+                    <h1 className="page-title">Attendance</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>Mark daily attendance for your team</p>
                 </div>
                 <input type="date" className="input" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} style={{ width: 200 }} />
             </div>
 
-            <div className="table-container">
+            <div className="table-container responsive-table">
                 <table>
                     <thead><tr><th>Employee</th><th>Position</th><th>Department</th><th>Status</th><th>Mark Attendance</th></tr></thead>
                     <tbody>
@@ -69,11 +69,11 @@ export default function AttendancePage() {
                             <tr><td colSpan={5} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No active employees</td></tr>
                         ) : employees.map(emp => (
                             <tr key={emp._id}>
-                                <td style={{ fontWeight: 600 }}>{emp.name}</td>
-                                <td>{emp.position}</td>
-                                <td><span className={`badge badge-info`}>{emp.department}</span></td>
-                                <td><span className={`badge ${statusColors[getAttendanceStatus(emp._id)]}`}>{getAttendanceStatus(emp._id)}</span></td>
-                                <td>
+                                <td data-label="Employee" style={{ fontWeight: 600 }}>{emp.name}</td>
+                                <td data-label="Position">{emp.position}</td>
+                                <td data-label="Department"><span className={`badge badge-info`}>{emp.department}</span></td>
+                                <td data-label="Status"><span className={`badge ${statusColors[getAttendanceStatus(emp._id)]}`}>{getAttendanceStatus(emp._id)}</span></td>
+                                <td data-label="Mark Attendance">
                                     <div style={{ display: 'flex', gap: 6 }}>
                                         {['present', 'absent', 'half-day', 'late'].map(s => (
                                             <button key={s} onClick={() => markAttendance(emp._id, s)}

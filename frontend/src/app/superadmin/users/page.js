@@ -90,9 +90,9 @@ export default function SuperAdminUsers() {
     <div className="fade-in">
       {toast}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
+      <div className="page-header-flex">
         <div>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>All Users</h1>
+          <h1 className="page-title">All Users</h1>
           <p style={{ color: 'var(--text-secondary)' }}>{users.length} registered users on the platform</p>
         </div>
         <button onClick={openCreate} className="btn btn-primary">+ Create User</button>
@@ -111,7 +111,7 @@ export default function SuperAdminUsers() {
       {loading ? (
         <div className="loading"><div className="spinner"></div></div>
       ) : (
-        <div className="table-container">
+        <div className="table-container responsive-table">
           <table>
             <thead>
               <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
@@ -121,19 +121,19 @@ export default function SuperAdminUsers() {
                 <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No users found</td></tr>
               ) : filtered.map(u => (
                 <tr key={u._id}>
-                  <td style={{ fontWeight: 600 }}>{u.name}</td>
-                  <td style={{ color: 'var(--text-secondary)' }}>{u.email}</td>
-                  <td>{u.phone || '—'}</td>
-                  <td>{roleBadge(u.role)}</td>
-                  <td>
+                  <td data-label="Name" style={{ fontWeight: 600 }}>{u.name}</td>
+                  <td data-label="Email" style={{ color: 'var(--text-secondary)' }}>{u.email}</td>
+                  <td data-label="Phone">{u.phone || '—'}</td>
+                  <td data-label="Role">{roleBadge(u.role)}</td>
+                  <td data-label="Status">
                     <button onClick={() => toggleActive(u)}
                       className={`badge ${u.isActive !== false ? 'badge-success' : 'badge-danger'}`}
                       style={{ cursor: 'pointer', border: 'none' }}>
                       {u.isActive !== false ? 'Active' : 'Inactive'}
                     </button>
                   </td>
-                  <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(u.createdAt).toLocaleDateString()}</td>
-                  <td>
+                  <td data-label="Joined" style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+                  <td data-label="Actions">
                     <div style={{ display: 'flex', gap: 6 }}>
                       <button onClick={() => openEdit(u)} className="btn btn-ghost btn-sm" title="Edit">✏️</button>
                       <button onClick={() => handleDelete(u._id)} className="btn btn-ghost btn-sm" style={{ color: 'var(--danger)' }} title="Delete">🗑️</button>

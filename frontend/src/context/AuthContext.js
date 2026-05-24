@@ -51,6 +51,16 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  // Re-hydrate when login/register writes to localStorage (no page refresh needed)
+  useEffect(() => {
+    const rehydrate = () => {
+      const saved = getInitialUser();
+      if (saved) setDbUser(saved);
+    };
+    window.addEventListener('auth-storage-update', rehydrate);
+    return () => window.removeEventListener('auth-storage-update', rehydrate);
+  }, []);
+
   const authLoadDone = isUserLoaded && isAuthLoaded && hydrated;
   const loading = (!authLoadDone && !dbUser) || (clerkUser && !dbUser);
 
