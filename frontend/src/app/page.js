@@ -36,9 +36,9 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section style={{ padding: '80px 0', background: 'var(--bg-surface)' }}>
+      <section className="section-padding" style={{ background: 'var(--bg-surface)' }}>
         <div className="container">
-          <h2 style={{ textAlign: 'center', fontSize: '2.2rem', fontWeight: 800, marginBottom: 48 }}>
+          <h2 className="section-title" style={{ textAlign: 'center', marginBottom: 48 }}>
             How It Works
           </h2>
           <div className="grid-3">
@@ -48,7 +48,7 @@ export default function HomePage() {
               { icon: '🍕', title: 'Order from Table', desc: 'Browse the menu and place orders directly from your table. No waiting!' },
             ].map((f, i) => (
               <div key={i} className="card" style={{ textAlign: 'center' }}>
-                <div className="card-body" style={{ padding: 40 }}>
+                <div className="card-body">
                   <div style={{ fontSize: '3rem', marginBottom: 16 }}>{f.icon}</div>
                   <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 8 }}>{f.title}</h3>
                   <p style={{ color: 'var(--text-secondary)' }}>{f.desc}</p>
@@ -60,11 +60,11 @@ export default function HomePage() {
       </section>
 
       {/* Featured Restaurants */}
-      <section style={{ padding: '80px 0' }}>
+      <section className="section-padding">
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
+          <div className="featured-header">
             <div>
-              <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Featured Restaurants</h2>
+              <h2 className="section-title">Featured Restaurants</h2>
               <p style={{ color: 'var(--text-secondary)' }}>Handpicked places for a great dining experience</p>
             </div>
             <Link href="/restaurants" className="btn btn-outline">View All →</Link>

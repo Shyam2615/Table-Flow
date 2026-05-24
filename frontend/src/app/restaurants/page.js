@@ -10,18 +10,17 @@ export default function RestaurantsPage() {
     const [cuisineFilter, setCuisineFilter] = useState('');
 
     useEffect(() => {
+        const loadRestaurants = async () => {
+            try {
+                const params = {};
+                if (cuisineFilter) params.cuisine = cuisineFilter;
+                const { data } = await API.get('/restaurants', { params });
+                setRestaurants(data);
+            } catch (err) { console.error(err); }
+            setLoading(false);
+        };
         loadRestaurants();
     }, [cuisineFilter]);
-
-    const loadRestaurants = async () => {
-        try {
-            const params = {};
-            if (cuisineFilter) params.cuisine = cuisineFilter;
-            const { data } = await API.get('/restaurants', { params });
-            setRestaurants(data);
-        } catch (err) { console.error(err); }
-        setLoading(false);
-    };
 
     const filtered = restaurants.filter(r =>
         r.name.toLowerCase().includes(search.toLowerCase())
@@ -30,7 +29,7 @@ export default function RestaurantsPage() {
     const allCuisines = [...new Set(restaurants.flatMap(r => r.cuisine || []))];
 
     return (
-        <div className="container fade-in" style={{ padding: '48px 32px' }}>
+        <div className="container fade-in" style={{ paddingTop: 48, paddingBottom: 48 }}>
             <div className="page-header">
                 <h1>All Restaurants</h1>
                 <p>Find your perfect dining experience</p>

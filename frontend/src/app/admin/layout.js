@@ -9,6 +9,7 @@ export default function AdminLayout({ children }) {
     const { user } = useAuth();
     const pathname = usePathname();
     const [restaurant, setRestaurant] = useState(null);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         if (user?.role === 'owner') {
@@ -40,19 +41,21 @@ export default function AdminLayout({ children }) {
         { href: '/admin/waiters', label: 'Waiters', icon: '🧑‍🍳' },
     ];
 
+    const closeSidebar = () => setSidebarOpen(false);
+
     return (
         <div className="admin-layout">
-            <aside className="sidebar">
+            <div className={`sidebar-overlay${sidebarOpen ? ' open' : ''}`} onClick={closeSidebar}></div>
+            <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
                 <div className="sidebar-brand">
                     <h2>🍽️ <span>Table</span>Flow</h2>
-                    {/* <p>{restaurant?.name || 'Loading...'}</p> */}
                 </div>
                 <nav className="sidebar-nav">
                     {links.map((link, i) => (
                         link.section ? (
                             <div key={i} className="sidebar-section">{link.section}</div>
                         ) : (
-                            <Link key={i} href={link.href} className={pathname === link.href ? 'active' : ''}>
+                            <Link key={i} href={link.href} className={pathname === link.href ? 'active' : ''} onClick={closeSidebar}>
                                 <span>{link.icon}</span> {link.label}
                             </Link>
                         )
@@ -60,6 +63,9 @@ export default function AdminLayout({ children }) {
                 </nav>
             </aside>
             <div className="admin-content">
+                <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                    ☰ Menu
+                </button>
                 {children}
             </div>
         </div>

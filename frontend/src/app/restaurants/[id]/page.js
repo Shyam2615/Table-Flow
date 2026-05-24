@@ -78,19 +78,19 @@ export default function RestaurantDetailPage() {
             {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
 
             {/* Restaurant Header */}
-            <div style={{ position: 'relative', height: 360, overflow: 'hidden' }}>
+            <div className="restaurant-header">
                 <img src={restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200'}
-                    alt={restaurant.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--bg-dark), transparent 60%)' }} />
-                <div className="container" style={{ position: 'absolute', bottom: 32, left: 0, right: 0, padding: '0 32px' }}>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: 8 }}>{restaurant.name}</h1>
-                    <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-                        <span className="rating" style={{ fontSize: '1.1rem' }}>⭐ {restaurant.rating?.toFixed(1)}</span>
+                    alt={restaurant.name} className="restaurant-header-img" />
+                <div className="restaurant-header-overlay" />
+                <div className="container restaurant-header-content">
+                    <h1 className="restaurant-header-title">{restaurant.name}</h1>
+                    <div className="restaurant-header-meta">
+                        <span className="rating">⭐ {restaurant.rating?.toFixed(1)}</span>
                         <span style={{ color: 'var(--text-secondary)' }}>{restaurant.totalReviews} reviews</span>
                         <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{restaurant.priceRange}</span>
                         <span style={{ color: 'var(--text-secondary)' }}>🕐 {restaurant.openingHours?.open} - {restaurant.openingHours?.close}</span>
                     </div>
-                    <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                    <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
                         {restaurant.cuisine?.map((c, i) => <span key={i} className="badge badge-primary">{c}</span>)}
                     </div>
                 </div>
@@ -109,7 +109,7 @@ export default function RestaurantDetailPage() {
                 </div>
 
                 {activeTab === 'menu' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 32 }}>
+                    <div className="restaurant-page-grid">
                         {/* Menu Items */}
                         <div>
                             {categories.map(cat => (
