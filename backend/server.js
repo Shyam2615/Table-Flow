@@ -14,6 +14,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/restaurants', require('./routes/restaurants'));
+app.use('/api/tables', require('./routes/tables'));
 app.use('/api/menu', require('./routes/menu'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/orders', require('./routes/orders'));

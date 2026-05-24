@@ -22,7 +22,10 @@ const restaurantSchema = new mongoose.Schema({
     },
     tables: [{
         tableNumber: { type: Number, required: true },
+        tableName: { type: String, default: '' },
         capacity: { type: Number, required: true },
+        positionX: { type: Number, default: 0 },
+        positionY: { type: Number, default: 0 },
         isAvailable: { type: Boolean, default: true }
     }],
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

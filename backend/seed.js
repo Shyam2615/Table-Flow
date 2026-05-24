@@ -53,6 +53,8 @@ const seedData = async () => {
         });
         console.log('Customer created: john@example.com / customer123');
 
+        
+
         // Create Restaurants
         const restaurant1 = await Restaurant.create({
             name: 'Spice Garden',
@@ -144,6 +146,36 @@ const seedData = async () => {
         ];
 
         await MenuItem.insertMany([...spiceGardenMenu, ...bellaVistaMenu]);
+
+        // Create Waiters
+        const waiter1 = await User.create({
+            name: 'Vikram Singh',
+            email: 'vikram@spicegarden.com',
+            password: 'waiter123',
+            role: 'waiter',
+            phone: '9876543213',
+            restaurantId: restaurant1._id
+        });
+
+        const waiter2 = await User.create({
+            name: 'Amit Sharma',
+            email: 'amit@spicegarden.com',
+            password: 'waiter123',
+            role: 'waiter',
+            phone: '9876543214',
+            restaurantId: restaurant1._id
+        });
+
+        const waiter3 = await User.create({
+            name: 'Luigi Bianchi',
+            email: 'luigi@bellavista.com',
+            password: 'waiter123',
+            role: 'waiter',
+            phone: '9876543215',
+            restaurantId: restaurant2._id
+        });
+        console.log('Waiters created: waiter123');
+
         console.log('Menu items seeded successfully');
 
         console.log('\n✅ Seed data created successfully!');
@@ -153,6 +185,9 @@ const seedData = async () => {
         console.log('Owner 1:      rajesh@spicegarden.com / owner123');
         console.log('Owner 2:      marco@bellavista.com / owner123');
         console.log('Customer:     john@example.com / customer123');
+        console.log('Waiter 1:     vikram@spicegarden.com / waiter123');
+        console.log('Waiter 2:     amit@spicegarden.com / waiter123');
+        console.log('Waiter 3:     luigi@bellavista.com / waiter123');
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
         process.exit(0);
