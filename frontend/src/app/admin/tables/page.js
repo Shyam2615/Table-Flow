@@ -325,16 +325,7 @@ export default function TableManagement() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Date/Time Filter - Prominent */}
-          <div style={{
-            background: 'var(--surface)',
-            border: '2px solid var(--border)',
-            borderRadius: '12px',
-            padding: '16px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '20px',
-            flexWrap: 'wrap',
-          }}>
+          <div className="tables-filter-bar">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--text-secondary)" strokeWidth="1.5">
                 <rect x="2" y="4" width="16" height="14" rx="2" />
@@ -348,29 +339,15 @@ export default function TableManagement() {
               </span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, flexWrap: 'wrap' }}>
+            <div className="tables-filter-section">
               <div style={{ position: 'relative', minWidth: 160 }}>
                 <input
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  style={{
-                    padding: '8px 12px 8px 32px',
-                    border: '1.5px solid var(--border)',
-                    borderRadius: '8px',
-                    background: 'var(--bg)',
-                    color: 'var(--text)',
-                    fontSize: '0.85rem',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    outline: 'none',
-                    cursor: 'pointer',
-                  }}
+                  className="bookings-date-input"
                 />
-                <span style={{
-                  position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)',
-                  fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.5,
-                }}>📅</span>
+                <span className="bookings-date-icon">📅</span>
               </div>
 
               <div style={{ position: 'relative', minWidth: 140 }}>
@@ -378,23 +355,9 @@ export default function TableManagement() {
                   type="time"
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
-                  style={{
-                    padding: '8px 12px 8px 32px',
-                    border: '1.5px solid var(--border)',
-                    borderRadius: '8px',
-                    background: 'var(--bg)',
-                    color: 'var(--text)',
-                    fontSize: '0.85rem',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    outline: 'none',
-                    cursor: 'pointer',
-                  }}
+                  className="bookings-date-input"
                 />
-                <span style={{
-                  position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)',
-                  fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.5,
-                }}>🕐</span>
+                <span className="bookings-date-icon">🕐</span>
               </div>
 
               <button
@@ -405,79 +368,62 @@ export default function TableManagement() {
                   setSelectedDate(now.toISOString().split('T')[0]);
                   setSelectedTime(`${hh}:${mm}`);
                 }}
-                style={{
-                  padding: '8px 14px',
-                  background: 'var(--primary)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '0.8rem',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s',
-                }}
+                className="bookings-today-btn"
+                style={{ padding: '8px 14px', backgroundColor: 'var(--primary)', color: '#fff', border: 'none' }}
               >
                 ◉ Now
               </button>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', fontSize: '0.78rem', marginLeft: 'auto' }}>
+            <div className="tables-legend">
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ display: 'inline-block', width: 12, height: 12, borderRadius: 3, background: '#10b981' }}></span> Available
+                <span className="tables-legend-dot" style={{ background: '#10b981' }}></span> Available
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ display: 'inline-block', width: 12, height: 12, borderRadius: 3, background: '#ef4444' }}></span> Booked
+                <span className="tables-legend-dot" style={{ background: '#ef4444' }}></span> Booked
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ display: 'inline-block', width: 12, height: 12, borderRadius: 3, background: '#3b82f6' }}></span> Selected
+                <span className="tables-legend-dot" style={{ background: '#3b82f6' }}></span> Selected
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '24px' }}>
+          <div className="tables-layout">
             {/* Canvas Area */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="tables-canvas-wrap">
               <div style={{
-                background: 'var(--surface)',
-                border: '2px solid var(--border)',
-                borderRadius: '12px',
-                padding: '16px',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                marginBottom: '12px', fontSize: '0.9rem', color: 'var(--text-secondary)',
               }}>
-                <div style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  marginBottom: '12px', fontSize: '0.9rem', color: 'var(--text-secondary)',
-                }}>
-                  <span>
-                    {editingLayout
-                      ? '🖱️ Drag tables to reposition them'
-                      : '📍 Click a table to select it'}
-                  </span>
-                </div>
-
-                <canvas
-                  ref={canvasRef}
-                  width={canvasSize.width}
-                  height={canvasSize.height}
-                  onMouseDown={handleCanvasMouseDown}
-                  onMouseMove={handleCanvasMouseMove}
-                  onMouseUp={handleCanvasMouseUp}
-                  onMouseLeave={() => { handleCanvasMouseUp(); setHoveredTable(null); }}
-                  style={{
-                    background: '#f0f2f5',
-                    border: '1px solid var(--border)',
-                    borderRadius: '8px',
-                    cursor: editingLayout ? 'grab' : 'pointer',
-                    display: 'block',
-                    width: '100%',
-                    aspectRatio: `${canvasSize.width}/${canvasSize.height}`,
-                  }}
-                />
+                <span>
+                  {editingLayout
+                    ? '🖱️ Drag tables to reposition them'
+                    : '📍 Click a table to select it'}
+                </span>
               </div>
+
+              <canvas
+                ref={canvasRef}
+                width={canvasSize.width}
+                height={canvasSize.height}
+                onMouseDown={handleCanvasMouseDown}
+                onMouseMove={handleCanvasMouseMove}
+                onMouseUp={handleCanvasMouseUp}
+                onMouseLeave={() => { handleCanvasMouseUp(); setHoveredTable(null); }}
+                style={{
+                  background: '#f0f2f5',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  cursor: editingLayout ? 'grab' : 'pointer',
+                  display: 'block',
+                  width: '100%',
+                  aspectRatio: `${canvasSize.width}/${canvasSize.height}`,
+                }}
+              />
             </div>
 
             {/* Sidebar */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="tables-sidebar">
               {/* Controls */}
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button
@@ -485,14 +431,13 @@ export default function TableManagement() {
                   style={{
                     flex: 1,
                     padding: '10px',
-                    background: editingLayout ? 'var(--error)' : 'var(--primary)',
+                    background: editingLayout ? '#ef4444' : 'var(--primary)',
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',
                     cursor: 'pointer',
                     fontWeight: 600,
                     fontSize: '0.9rem',
-                    transition: 'all 0.2s',
                   }}
                 >
                   {editingLayout ? '✓ Done Editing' : '✎ Edit Layout'}
@@ -500,18 +445,9 @@ export default function TableManagement() {
               </div>
 
               {/* Table List */}
-              <div style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '10px',
-                padding: '12px',
-                maxHeight: 'calc(100vh - 420px)',
-                overflowY: 'auto',
-              }}>
-                <label style={{ display: 'block', marginBottom: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
-                  Tables ({tables.length})
-                </label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="tables-list">
+                <label className="tables-list-label">Tables ({tables.length})</label>
+                <div className="tables-list-items">
                   {tables.map((table) => (
                     <div
                       key={table.tableNumber}
@@ -554,12 +490,7 @@ export default function TableManagement() {
 
               {/* Edit Panel */}
               {selectedTable && (
-                <div style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '10px',
-                  padding: '14px',
-                }}>
+                <div className="tables-edit-panel">
                   <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '10px' }}>
                     Table {selectedTable.tableNumber} — {selectedTable.capacity} seats
                   </label>

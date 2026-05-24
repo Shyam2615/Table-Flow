@@ -61,64 +61,29 @@ export default function AdminBookings() {
 
       {loading ? <div className="loading"><div className="spinner"></div></div> : (
         <>
-          <div style={{
-            background: 'var(--surface)',
-            border: '2px solid var(--border)',
-            borderRadius: '12px',
-            padding: '14px 20px',
-            marginBottom: 20,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 16,
-            flexWrap: 'wrap',
-          }}>
-            <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>📅 Filter by date</span>
-            <div style={{ position: 'relative', minWidth: 170 }}>
+          <div className="bookings-filter-bar">
+            <span className="bookings-filter-label">📅 Filter by date</span>
+            <div className="bookings-date-wrap">
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => { setSelectedDate(e.target.value); setPage(1); }}
-                style={{
-                  padding: '8px 12px 8px 30px',
-                  border: '1.5px solid var(--border)',
-                  borderRadius: '8px',
-                  background: 'var(--bg)',
-                  color: 'var(--text)',
-                  fontSize: '0.85rem',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  outline: 'none',
-                  cursor: 'pointer',
-                }}
+                className="bookings-date-input"
               />
-              <span style={{
-                position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)',
-                fontSize: '0.78rem', pointerEvents: 'none', opacity: 0.5,
-              }}>📅</span>
+              <span className="bookings-date-icon">📅</span>
             </div>
             {selectedDate !== today && (
-              <button
-                onClick={() => { setSelectedDate(today); setPage(1); }}
-                style={{
-                  padding: '6px 12px',
-                  background: 'transparent',
-                  color: 'var(--primary)',
-                  border: '1.5px solid var(--primary)',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '0.78rem',
-                }}
-              >
+              <button onClick={() => { setSelectedDate(today); setPage(1); }} className="bookings-today-btn">
                 ◉ Today
               </button>
             )}
-            <span style={{ marginLeft: 'auto', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            <span className="bookings-count">
               {total} booking{total !== 1 ? 's' : ''}
             </span>
           </div>
 
-          <div className="table-container">
+          {/* Desktop Table */}
+          <div className="table-container bookings-table-desktop">
             <table>
               <thead>
                 <tr>
@@ -157,6 +122,42 @@ export default function AdminBookings() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="bookings-cards-mobile">
+            {bookings.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No bookings for this date</div>
+            ) : bookings.map(b => (
+              <div key={b._id} className="card">
+                <div className="card-body">
+                  <div className="bookings-card-header">
+                    <div>
+                      <div className="bookings-card-name">{b.userId?.name || 'Guest'}</div>
+                      <div className="bookings-card-contact">{b.userId?.email}{b.userId?.phone ? ` • ${b.userId.phone}` : ''}</div>
+                    </div>
+                    {getStatusBadge(b.status)}
+                  </div>
+                  <div className="bookings-card-details">
+                    <span>📅 {b.date}</span>
+                    <span>🕐 {b.time}</span>
+                    <span>🪑 T{b.tableNumber}</span>
+                    <span>👥 {b.guests}</span>
+                  </div>
+                  <div className="bookings-card-actions">
+                    {b.status === 'pending' && (
+                      <>
+                        <button onClick={() => updateStatus(b._id, 'confirmed')} className="btn btn-success btn-sm">✓ Confirm</button>
+                        <button onClick={() => updateStatus(b._id, 'cancelled')} className="btn btn-danger btn-sm">✕ Cancel</button>
+                      </>
+                    )}
+                    {b.status === 'confirmed' && (
+                      <button onClick={() => updateStatus(b._id, 'completed')} className="btn btn-sm btn-secondary">Complete</button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {totalPages > 1 && (

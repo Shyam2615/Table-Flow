@@ -17,6 +17,7 @@ export default function RestaurantDetailPage() {
     const [tableNumber, setTableNumber] = useState('');
     const [orderNotes, setOrderNotes] = useState('');
     const [toast, setToast] = useState(null);
+    const [cartOpen, setCartOpen] = useState(false);
 
     useEffect(() => {
         Promise.all([
@@ -98,7 +99,7 @@ export default function RestaurantDetailPage() {
 
             <div className="container" style={{ padding: '32px' }}>
                 {/* Tabs */}
-                <div style={{ display: 'flex', gap: 8, marginBottom: 32, borderBottom: '1px solid var(--border)', paddingBottom: 8 }}>
+                <div className="restaurant-tabs">
                     {['menu', 'info', 'book'].map(tab => (
                         <button key={tab} onClick={() => setActiveTab(tab)}
                             className={`btn btn-ghost ${activeTab === tab ? 'active' : ''}`}
@@ -126,9 +127,9 @@ export default function RestaurantDetailPage() {
                                                     <p>{item.description}</p>
                                                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>⏱️ {item.preparationTime} min</span>
                                                 </div>
-                                                <div style={{ textAlign: 'right' }}>
+                                                <div className="menu-item-actions">
                                                     <div className="item-price">₹{item.price}</div>
-                                                    <button onClick={() => addToCart(item)} className="btn btn-primary btn-sm" style={{ marginTop: 8 }}>
+                                                    <button onClick={() => addToCart(item)} className="btn btn-primary btn-sm">
                                                         + Add
                                                     </button>
                                                 </div>
@@ -139,8 +140,8 @@ export default function RestaurantDetailPage() {
                             ))}
                         </div>
 
-                        {/* Cart Sidebar */}
-                        <div className="cart-sidebar">
+                        {/* Cart Sidebar - Desktop */}
+                        <div className="cart-sidebar cart-sidebar-desktop">
                             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 16 }}>🛒 Your Order</h3>
                             {cart.length === 0 ? (
                                 <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px 0' }}>No items yet</p>
@@ -186,6 +187,62 @@ export default function RestaurantDetailPage() {
                             )}
                         </div>
                     </div>
+                )}
+
+                {/* Floating Cart Button (Mobile) */}
+                {activeTab === 'menu' && cart.length > 0 && (
+                    <>
+                        <button className="cart-fab" onClick={() => setCartOpen(true)}>
+                            🛒
+                            <span className="cart-fab-badge">{cart.reduce((s, c) => s + c.quantity, 0)}</span>
+                        </button>
+                        <div className={`cart-drawer-overlay${cartOpen ? ' open' : ''}`} onClick={() => setCartOpen(false)}></div>
+                        <div className={`cart-drawer${cartOpen ? ' open' : ''}`}>
+                            <div className="cart-drawer-header">
+                                <div className="cart-drawer-handle"></div>
+                                <h3>🛒 Your Order</h3>
+                                <button onClick={() => setCartOpen(false)} className="btn btn-ghost btn-sm">✕</button>
+                            </div>
+                            <div className="cart-drawer-body">
+                                {cart.map(item => (
+                                    <div key={item._id} className="cart-item">
+                                        <div>
+                                            <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>{item.name}</div>
+                                            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>₹{item.price} each</div>
+                                        </div>
+                                        <div className="item-qty">
+                                            <button onClick={() => updateQty(item._id, -1)} className="qty-btn">-</button>
+                                            <span style={{ fontWeight: 600 }}>{item.quantity}</span>
+                                            <button onClick={() => updateQty(item._id, 1)} className="qty-btn">+</button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="cart-drawer-footer">
+                                <div className="cart-total" style={{ padding: '0 0 12px' }}>
+                                    <span>Total</span>
+                                    <span style={{ color: 'var(--primary)' }}>₹{cartTotal}</span>
+                                </div>
+                                <div className="input-group">
+                                    <select className="select" value={tableNumber} onChange={e => setTableNumber(e.target.value)}>
+                                        <option value="">Select table</option>
+                                        {restaurant.tables?.map(t => (
+                                            <option key={t.tableNumber} value={t.tableNumber}>
+                                                Table {t.tableNumber} (Seats {t.capacity})
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="input-group">
+                                    <textarea className="input" value={orderNotes} onChange={e => setOrderNotes(e.target.value)}
+                                        placeholder="Special instructions..." rows={2} />
+                                </div>
+                                <button onClick={placeOrder} className="btn btn-primary" style={{ width: '100%' }}>
+                                    Place Order — ₹{cartTotal}
+                                </button>
+                            </div>
+                        </div>
+                    </>
                 )}
 
                 {activeTab === 'info' && (

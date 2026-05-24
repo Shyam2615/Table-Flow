@@ -80,9 +80,9 @@ export default function MenuManagement() {
     return (
         <div className="fade-in">
             {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <div className="menu-header">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Menu Management</h1>
+                    <h1 className="menu-header-title">Menu Management</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>{items.length} items in your menu</p>
                 </div>
                 <button onClick={openAdd} className="btn btn-primary">+ Add Item</button>
